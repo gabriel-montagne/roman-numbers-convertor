@@ -21,10 +21,10 @@ ROMAN_SYMBOLS = {
 
 def validate_input(string):
     if not match(r'^[0-9]+$', string):
-        raise TypeError('Input must be integer')
+        raise Exception('Input must be integer in interval [1 ... 3999]')
     digit_number = int(string)
     if digit_number < 0 or digit_number > 3999:
-        raise TypeError('Input must be in interval [0 ... 3999]')
+        raise Exception('Input must be <= 3999]')
     return digit_number
 
 
@@ -43,15 +43,16 @@ def convert_digit(digit, power):
     return result
 
 
-def convert_number(digital_numeral):
+def convert_number(digit_string):
+    digit_numeral = validate_input(digit_string)
     roman_numeral = ''
     for i in range(4):
-        digit = digital_numeral % 10
+        digit = digit_numeral % 10
         roman_numeral = convert_digit(digit, i) + roman_numeral
-        digital_numeral = digital_numeral // 10
+        digit_numeral = digit_numeral // 10
     return roman_numeral
 
 
 if __name__ == '__main__':
-    number = validate_input('4a123')
+    number = validate_input('12')
     print(convert_number(number))
