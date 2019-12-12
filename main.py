@@ -1,4 +1,5 @@
-from re import match
+import json
+import re
 
 ROMAN_SYMBOLS = {
     0: {
@@ -20,12 +21,12 @@ ROMAN_SYMBOLS = {
 
 
 def validate_input(string):
-    if not match(r'^[0-9]+$', string):
-        raise Exception('Input must be integer in interval [1 ... 3999]')
+    if not re.match(r'^[0-9]+$', string):
+        return None, 'Input must be integer in interval [1 ... 3999]'
     digit_number = int(string)
     if digit_number < 0 or digit_number > 3999:
-        raise Exception('Input must be <= 3999]')
-    return digit_number
+        return None, 'Input must be <= 3999]'
+    return digit_number, None
 
 
 def convert_digit(digit, power):
@@ -43,8 +44,7 @@ def convert_digit(digit, power):
     return result
 
 
-def convert_number(digit_string):
-    digit_numeral = validate_input(digit_string)
+def convert_number(digit_numeral):
     roman_numeral = ''
     for i in range(4):
         digit = digit_numeral % 10
@@ -53,6 +53,13 @@ def convert_number(digit_string):
     return roman_numeral
 
 
-if __name__ == '__main__':
-    number = validate_input('12')
-    print(convert_number(number))
+def handler(request):
+    request_json = request.get_json()
+    if request_json and 'digits_string' in request_json:
+        digits_string = request_json['digits_string']
+        digit_numeral, error_message = validate_input(digits_string)
+        if error_message:
+            return error_message, 500
+        return json.dumps({'result': convert_number(digit_numeral)})
+    else:
+        return 'There is no digits_string key in payload', 500
