@@ -27,7 +27,7 @@ from a given integer in the range of [1 ... 3999]
 
         > gcloud auth login
         
-5. A browser window will appear. Select your user and login into your accout.
+5. A browser window will appear. Select your user and login into your account.
 6. A confirmation page will appear asking you to allow Google Clouds SDK to access your account.
 Click Allow button.
 7. In the up-right corner of the page you will find Console button. Click it to navigate to the console.
