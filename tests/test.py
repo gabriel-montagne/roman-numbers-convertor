@@ -1,4 +1,5 @@
 import unittest
+import json
 from unittest.mock import Mock
 from main import handler
 
@@ -8,28 +9,28 @@ class ConvertNumberToRomanNumeralCase(unittest.TestCase):
         data = {'digits_string': '12'}
         req = Mock(get_json=Mock(return_value=data), args=data)
         actual_result = handler(req)
-        expected_result = 'XII'
+        expected_result = json.dumps({'result': 'XII'})
         self.assertEqual(actual_result, expected_result)
 
     def test_2(self):
         data = {'digits_string': '79'}
         req = Mock(get_json=Mock(return_value=data), args=data)
         actual_result = handler(req)
-        expected_result = 'LXXIX'
+        expected_result = json.dumps({'result': 'LXXIX'})
         self.assertEqual(actual_result, expected_result)
 
     def test_3(self):
         data = {'digits_string': '225'}
         req = Mock(get_json=Mock(return_value=data), args=data)
         actual_result = handler(req)
-        expected_result = 'CCXXV'
+        expected_result =json.dumps({'result': 'CCXXV'})
         self.assertEqual(actual_result, expected_result)
 
     def test_4(self):
         data = {'digits_string': '2922'}
         req = Mock(get_json=Mock(return_value=data), args=data)
         actual_result = handler(req)
-        expected_result = 'MMCMXXII'
+        expected_result = json.dumps({'result': 'MMCMXXII'})
         self.assertEqual(actual_result, expected_result)
 
     def test_chars(self):
