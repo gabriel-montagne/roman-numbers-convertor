@@ -5,13 +5,42 @@
 This project aims to provide a simple cloud service to compute a roman numeral 
 from a given integer in the range of [1 ... 3999]
 
-### Prerequisites
+        
+### Testing
+#### Prerequisites
+
+ - Python3 environment
+
+To run the tests:
+
+    > make test
+    
+You can test the cloud function using Postman or just a simple curl command:
+
+    > curl -X POST 'https://us-central1-roman-numeral-2019.cloudfunctions.net/handler'  -H 'Content-Type: application/json' -d '{"digits_string": "849"}'
+
+To run in local environment:
+    
+    1. Start the server:
+        > make local
+    2. Run curl command:
+        > curl -X POST 'localhost:5000/handler'  -H 'Content-Type: application/json' -d '{"digits_string": "849"}'
+
+###Run in Docker:
+####Prerequisites: 
+- Docker (https://docs.docker.com/v17.09/engine/installation/)
+
+        1. Start container:
+            > docker-compose up
+        2. Run curl command:
+            > curl -X POST 'localhost:5000/handler'  -H 'Content-Type: application/json' -d '{"digits_string": "849"}'
+        
+        
+### Deployment
+#### Prerequisites
 
  - Python3 environment
  - Google Cloud SDK (https://cloud.google.com/sdk/install)
- - Docker (https://docs.docker.com/v17.09/engine/installation/)
-
-### Deployment
 
 1. Clone this project on your computer and go to the created directory:
 
@@ -42,28 +71,4 @@ Click Allow button.
 12. Deploy the function to your project:
         
         > make deploy
-        
-### Testing
-
-To run the tests:
-
-    > make test
-    
-You can test the cloud function using Postman or just a simple curl command:
-
-    > curl -X POST 'https://roman-numeral-2019@appspot.gserviceaccount.com/handler  -H 'Content-Type: application/json' -d '{"digits_string": "849"}'
-
-To run in local environment:
-    
-    1. Start the server:
-        > make local
-    2. Run curl command:
-        > curl -X POST 'localhost:5000/handler'  -H 'Content-Type: application/json' -d '{"digits_string": "849"}'
-
-To run in docker:
-
-    1. Start container:
-        > docker-compose up
-    2. Run curl command:
-        > curl -X POST 'localhost:5000/handler'  -H 'Content-Type: application/json' -d '{"digits_string": "849"}'
         
