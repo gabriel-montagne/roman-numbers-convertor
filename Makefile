@@ -10,4 +10,4 @@ deploy:
 
 local:
 	@ echo 'Start local server ...'
-	@ gcpfemu -m main.py -f handler
+	@ python main.py

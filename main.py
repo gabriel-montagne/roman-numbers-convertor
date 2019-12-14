@@ -63,3 +63,14 @@ def handler(request):
         return json.dumps({'result': convert_number(digit_numeral)})
     else:
         return 'There is no digits_string key in payload', 500
+
+
+if __name__ == "__main__":
+    from flask import Flask, request
+    app = Flask(__name__)
+
+    @app.route('/handler')
+    def index():
+        return handler(request)
+
+    app.run('0.0.0.0', 5000, debug=True)
