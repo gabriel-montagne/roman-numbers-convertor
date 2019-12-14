@@ -17,3 +17,6 @@ node_modules
 #!include:.gitignore
 tests
 README.md
+Makefile
+docker-compose.yml
+Dockerfile

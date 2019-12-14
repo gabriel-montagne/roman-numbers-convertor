@@ -9,6 +9,7 @@ from a given integer in the range of [1 ... 3999]
 
  - Python3 environment
  - Google Cloud SDK (https://cloud.google.com/sdk/install)
+ - Docker (https://docs.docker.com/v17.09/engine/installation/)
 
 ### Deployment
 
@@ -28,7 +29,7 @@ from a given integer in the range of [1 ... 3999]
         > gcloud auth login
         
 5. A browser window will appear. Select your user and login into your account.
-6. A confirmation page will appear asking you to allow Google Clouds SDK to access your account.
+6. A confirmation page will appear asking you to allow Google Cloud SDK to access your account.
 Click Allow button.
 7. In the up-right corner of the page you will find Console button. Click it to navigate to the console.
 8. Open the projects window by clicking the dropdown arrow situated at the right side of title (Google Cloud Platform)
@@ -57,4 +58,12 @@ To run in local environment:
     1. Start the server:
         > make local
     2. Run curl command:
-        > curl -X POST 'localhost:5000/handler  -H 'Content-Type: application/json' -d '{"digits_string": "849"}'
+        > curl -X POST 'localhost:5000/handler'  -H 'Content-Type: application/json' -d '{"digits_string": "849"}'
+
+To run in docker:
+
+    1. Start container:
+        > docker-compose up
+    2. Run curl command:
+        > curl -X POST 'localhost:5000/handler'  -H 'Content-Type: application/json' -d '{"digits_string": "849"}'
+        
