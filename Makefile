@@ -7,3 +7,7 @@ deploy:
 	@ echo 'Start cloud deploy ...'
 	@ gcloud beta functions deploy handler --runtime python37 --trigger-http --project=$$PROJECT_NAME
 	@ echo 'Deploy ended...'
+
+local:
+	@ echo 'Start local server ...'
+	@ gcpfemu -m main.py -f handler

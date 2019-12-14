@@ -50,5 +50,11 @@ To run the tests:
     
 You can test the cloud function using Postman or just a simple curl command:
 
-    > curl -X POST 'https://your-cloud-function-url/handler  -H 'Content-Type: application/json' -d '{"digits_string": "849"}'
- 
+    > curl -X POST 'https://roman-numeral-2019@appspot.gserviceaccount.com/handler  -H 'Content-Type: application/json' -d '{"digits_string": "849"}'
+
+To run in local environment:
+    
+    1. Start the server:
+        > make local
+    2. Run curl command:
+        > curl -X POST 'localhost:5000/handler  -H 'Content-Type: application/json' -d '{"digits_string": "849"}'
