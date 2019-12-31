@@ -1,76 +1,64 @@
 import json
 import re
 
-ROMAN_SYMBOLS = {
-    0: {
-        '1': 'I',
-        '5': 'V',
-    },
-    1: {
-        '1': 'X',
-        '5': 'L',
-    },
-    2: {
-        '1': 'C',
-        '5': 'D',
-    },
-    3: {
-        '1': 'M'
-    }
+ROMAN_MAP = {
+    0: {'1': 'I', '2': 'II', '3': 'III', '4': 'IV', '5': 'V', '6': 'VI', '7': 'VII', '8': 'VIII', '9': 'IX'},
+    1: {'1': 'X', '2': 'XX', '3': 'XXX', '4': 'XL', '5': 'L', '6': 'LX', '7': 'LXX', '8': 'LXXX', '9': 'XC'},
+    2: {'1': 'C', '2': 'CC', '3': 'CCC', '4': 'CD', '5': 'D', '6': 'DC', '7': 'DCC', '8': 'DCCC', '9': 'CM'},
+    3: {'1': 'M', '2': 'MM', '3': 'MMM'}
 }
 
 
-def validate_input(string):
-    if not re.match(r'^[0-9]+$', string):
-        return None, 'Input must be integer in interval [1 ... 3999]'
-    digit_number = int(string)
-    if digit_number < 0 or digit_number > 3999:
-        return None, 'Input must be <= 3999]'
-    return digit_number, None
+def convert_digit(power, digit):
+    """
+    Converts a digit in roman numeral system for the given power of ten
+    :param power:
+    :param digit:
+    :return:
+    """
+    return ROMAN_MAP[power][digit]
 
 
-def convert_digit(digit, power):
-    result = ''
-    if digit < 5:
-        if digit < 4:
-            result = ROMAN_SYMBOLS[power]['1'] * digit
-        else:
-            result = ROMAN_SYMBOLS[power]['1'] + ROMAN_SYMBOLS[power]['5']
+def convert_number(number: int):
+    """
+    Converts a digit number into a roman numeral
+    :param number:
+    :return:
+    """
+    return ''.join([convert_digit(i, n) for i, n in enumerate(list(str(number))[::-1])][::-1])
+
+
+def validate_input(number):
+    if type(number) is int:
+        if number < 0 or number > 3999:
+            return None, 'Input must be integer in interval [1 ... 3999]'
     else:
-        if digit < 9:
-            result = ROMAN_SYMBOLS[power]['5'] + (digit - 5) * ROMAN_SYMBOLS[power]['1']
-        else:
-            result = (digit - 8) * ROMAN_SYMBOLS[power]['1'] + ROMAN_SYMBOLS[power + 1]['1']
-    return result
+        return None, 'key "number" must be integer!'
 
-
-def convert_number(digit_numeral):
-    roman_numeral = ''
-    for i in range(4):
-        digit = digit_numeral % 10
-        roman_numeral = convert_digit(digit, i) + roman_numeral
-        digit_numeral = digit_numeral // 10
-    return roman_numeral
+    return number, None
 
 
 def handler(request):
     request_json = request.get_json()
-    if request_json and 'digits_string' in request_json:
-        digits_string = request_json['digits_string']
-        digit_numeral, error_message = validate_input(digits_string)
+    if request_json and 'number' in request_json:
+        number = request_json['number']
+        digit_numeral, error_message = validate_input(number)
         if error_message:
             return error_message, 500
         return json.dumps({'result': convert_number(digit_numeral)})
     else:
-        return 'There is no digits_string key in payload', 500
+        return 'There is no "number" key in payload', 500
 
 
 if __name__ == "__main__":
     from flask import Flask, request
+
     app = Flask(__name__)
+
 
     @app.route('/handler', methods=['POST'])
     def index():
         return handler(request)
+
 
     app.run('0.0.0.0', 5000, debug=True)

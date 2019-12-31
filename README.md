@@ -32,14 +32,14 @@ To run the tests:
     
 You can test the cloud function using Postman or just a simple curl command:
 
-    > curl -X POST 'https://us-central1-roman-numeral-2019.cloudfunctions.net/handler'  -H 'Content-Type: application/json' -d '{"digits_string": "849"}'
+    > curl -X POST 'https://us-central1-roman-numeral-2019.cloudfunctions.net/handler'  -H 'Content-Type: application/json' -d '{"number": 849}'
 
 To run in local environment:
     
     1. Start the server:
         > make local
     2. Run curl command:
-        > curl -X POST 'localhost:5000/handler'  -H 'Content-Type: application/json' -d '{"digits_string": "849"}'
+        > curl -X POST 'localhost:5000/handler'  -H 'Content-Type: application/json' -d '{"number": 849}'
 
 ### Run in Docker:
 #### Prerequisites: 
@@ -48,7 +48,7 @@ To run in local environment:
         1. Start container:
             > docker-compose up
         2. Run curl command:
-            > curl -X POST 'localhost:5000/handler'  -H 'Content-Type: application/json' -d '{"digits_string": "849"}'
+            > curl -X POST 'localhost:5000/handler'  -H 'Content-Type: application/json' -d '{"number": 849}'
         
         
 ### Deployment
