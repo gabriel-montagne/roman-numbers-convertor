@@ -1,58 +1,47 @@
-import unittest
 import json
 from unittest.mock import Mock
+
+import pytest
+
 from main import handler
 
+test_data = [
+    (1111, 'MCXI'), (2222, 'MMCCXXII'), (3333, 'MMMCCCXXXIII'), (444, 'CDXLIV'), (555, 'DLV'),
+    (666, 'DCLXVI'), (777, 'DCCLXXVII'), (888, 'DCCCLXXXVIII'), (999, 'CMXCIX')
+]
 
-class ConvertNumberToRomanNumeralCase(unittest.TestCase):
-    def test_1(self):
-        data = {'digits_string': '12'}
-        req = Mock(get_json=Mock(return_value=data), args=data)
-        actual_result = handler(req)
-        expected_result = json.dumps({'result': 'XII'})
-        self.assertEqual(actual_result, expected_result)
 
-    def test_2(self):
-        data = {'digits_string': '79'}
-        req = Mock(get_json=Mock(return_value=data), args=data)
-        actual_result = handler(req)
-        expected_result = json.dumps({'result': 'LXXIX'})
-        self.assertEqual(actual_result, expected_result)
+@pytest.mark.parametrize('n, expected', test_data)
+def test_1(n, expected):
+    data = {'number': n}
+    req = Mock(get_json=Mock(return_value=data), args=data)
+    actual_result = handler(req)
+    expected_result = json.dumps({'result': expected})
+    assert actual_result == expected_result
 
-    def test_3(self):
-        data = {'digits_string': '225'}
-        req = Mock(get_json=Mock(return_value=data), args=data)
-        actual_result = handler(req)
-        expected_result =json.dumps({'result': 'CCXXV'})
-        self.assertEqual(actual_result, expected_result)
 
-    def test_4(self):
-        data = {'digits_string': '2922'}
-        req = Mock(get_json=Mock(return_value=data), args=data)
-        actual_result = handler(req)
-        expected_result = json.dumps({'result': 'MMCMXXII'})
-        self.assertEqual(actual_result, expected_result)
+def test_str():
+    data = {'number': '122'}
+    req = Mock(get_json=Mock(return_value=data), args=data)
+    actual_result = handler(req)
+    expected_result = ('key "number" must be integer!', 500)
+    assert actual_result == expected_result
 
-    def test_chars(self):
-        data = {'digits_string': 'a022'}
-        req = Mock(get_json=Mock(return_value=data), args=data)
-        actual_result = handler(req)
-        expected_result = ('Input must be integer in interval [1 ... 3999]', 500)
-        self.assertEqual(actual_result, expected_result)
 
-    def test_too_big(self):
-        data = {'digits_string': '4422'}
-        req = Mock(get_json=Mock(return_value=data), args=data)
-        actual_result = handler(req)
-        expected_result = ('Input must be <= 3999]', 500)
-        self.assertEqual(actual_result, expected_result)
+def test_too_big():
+    data = {'number': 4422}
+    req = Mock(get_json=Mock(return_value=data), args=data)
+    actual_result = handler(req)
+    expected_result = ('Input must be <= 3999]', 500)
+    assert actual_result, expected_result
 
-    def test_missing_key(self):
-        data = {'digit_string': '4422'}
-        req = Mock(get_json=Mock(return_value=data), args=data)
-        actual_result = handler(req)
-        expected_result = ('There is no digits_string key in payload', 500)
-        self.assertEqual(actual_result, expected_result)
+
+def test_missing_key():
+    data = {'some-key': '4422'}
+    req = Mock(get_json=Mock(return_value=data), args=data)
+    actual_result = handler(req)
+    expected_result = ('There is no "number" key in payload', 500)
+    assert actual_result == expected_result
 
 
 if __name__ == '__main__':
